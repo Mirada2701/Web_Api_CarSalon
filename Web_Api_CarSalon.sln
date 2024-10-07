@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web_Api_CarSalon", "Web_Api_CarSalon\Web_Api_CarSalon.csproj", "{AEF8CC1C-E9C7-4E41-A568-0ECAB60A004A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web_Api_CarSalon", "Web_Api_CarSalon\Web_Api_CarSalon.csproj", "{AEF8CC1C-E9C7-4E41-A568-0ECAB60A004A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{B71D0191-74AB-40D3-B1CE-2A65A64492BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{09C384F0-A6A8-4A9E-BA65-4D88DB98C12F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B71D0191-74AB-40D3-B1CE-2A65A64492BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B71D0191-74AB-40D3-B1CE-2A65A64492BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B71D0191-74AB-40D3-B1CE-2A65A64492BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09C384F0-A6A8-4A9E-BA65-4D88DB98C12F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09C384F0-A6A8-4A9E-BA65-4D88DB98C12F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09C384F0-A6A8-4A9E-BA65-4D88DB98C12F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09C384F0-A6A8-4A9E-BA65-4D88DB98C12F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
