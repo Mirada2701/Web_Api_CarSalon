@@ -1,4 +1,6 @@
+using Core.Interfaces;
 using Core.MapperProfiles;
+using Core.Services;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -21,6 +23,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CarSalonDbContext>(opt => opt.UseSqlServer(connectionString));
 builder.Services.AddAutoMapper(typeof(AppProfile));
+builder.Services.AddScoped<ICarService, CarService>();
 
 var app = builder.Build();
 
