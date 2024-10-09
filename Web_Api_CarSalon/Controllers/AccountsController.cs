@@ -23,10 +23,9 @@ namespace Web_Api_CarSalon.Controllers
             return Ok();
         }
         [HttpPost("login")]
-        public IActionResult Login(LoginDto model)
-        {
-
-            return Ok();
+        public async Task<IActionResult> Login(LoginDto model)
+        {            
+            return Ok(await accountService.Login(model));
         }
         [HttpPost("logout")]
         public IActionResult Logout(LoginDto model)

@@ -4,7 +4,7 @@ namespace Core.Interfaces
 {
     public interface IAccountService
     {
-        Task Login(LoginDto model);
+        Task<LoginResponse> Login(LoginDto model);
         Task Register(RegisterDto model);
         Task Logout();
     }

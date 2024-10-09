@@ -12,11 +12,13 @@ namespace Core.Services
     {
         private readonly UserManager<User> userManager;
         private readonly IMapper mapper;
+        private readonly IJwtService jwtService;
 
-        public AccountService(UserManager<User> userManager, IMapper mapper)
+        public AccountService(UserManager<User> userManager, IMapper mapper, IJwtService jwtService)
         {
             this.userManager = userManager;
             this.mapper = mapper;
+            this.jwtService = jwtService;
         }
         public async Task Register(RegisterDto model)
         {
@@ -37,9 +39,17 @@ namespace Core.Services
                 throw new HttpException(messages, HttpStatusCode.BadRequest);
             }
         }
-        public Task Login(LoginDto model)
+        public async Task<LoginResponse> Login(LoginDto model)
         {
-            throw new NotImplementedException();
+            var user = await userManager.FindByEmailAsync(model.Email);
+
+            if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
+                throw new HttpException("Invalid login or password.", HttpStatusCode.BadRequest);
+
+            return new LoginResponse
+            {
+                Token = jwtService.CreateToken(jwtService.GetClaims(user))
+            };
         }
 
         public Task Logout()

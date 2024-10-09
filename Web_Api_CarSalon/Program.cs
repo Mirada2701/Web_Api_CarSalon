@@ -42,6 +42,7 @@ builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssembli
 builder.Services.AddAutoMapper(typeof(AppProfile));
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 var app = builder.Build();
 
