@@ -7,6 +7,9 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Web_Api_CarSalon.Middlewares;
+using Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using Web_Api_CarSalon.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +28,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CarSalonDbContext>(opt => opt.UseSqlServer(connectionString));
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+    options.SignIn.RequireConfirmedAccount = false)
+    .AddDefaultTokenProviders()
+    .AddEntityFrameworkStores<CarSalonDbContext>();
 
 builder.Services.AddFluentValidationAutoValidation();
 // enable client-side validation
@@ -34,6 +41,7 @@ builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssembli
 
 builder.Services.AddAutoMapper(typeof(AppProfile));
 builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 
@@ -44,7 +52,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseExceptionHandler();
+app.UseGlobalExceptionHandler();
 
 app.UseHttpsRedirection();
 

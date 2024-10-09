@@ -11,6 +11,10 @@ namespace Core.MapperProfiles
             CreateMap<CreateCarDto, Car>();
             CreateMap<CarDto, Car>().ReverseMap();
             CreateMap<EditCarDto, Car>();
+
+            CreateMap<RegisterDto, User>()
+               .ForMember(x => x.UserName, opt => opt.MapFrom(src => src.Email))
+               .ForMember(x => x.PasswordHash, opt => opt.Ignore());
         }
     }
 }
