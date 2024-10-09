@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Core.Dtos;
+using Core.Exceptions;
 using Core.Interfaces;
 using Data;
 using Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,7 +33,7 @@ namespace Core.Services
         {
             var car = ctx.Cars.Find(id);
 
-            if (car == null) return;
+            if (car == null) throw new HttpException($"Car with {id} not found.",HttpStatusCode.NotFound);
 
             ctx.Cars.Remove(car);
             ctx.SaveChanges();
@@ -39,7 +41,6 @@ namespace Core.Services
 
         public void Edit(EditCarDto model)
         {
-
             ctx.Cars.Update(mapper.Map<Car>(model));
             ctx.SaveChanges();
         }
@@ -48,7 +49,7 @@ namespace Core.Services
         {
             var car = ctx.Cars.Find(id);
 
-            if (car == null) return null;
+            if (car == null) throw new HttpException($"Car with id: {id} not found.", HttpStatusCode.NotFound);
             //load car category
             ctx.Entry(car).Reference(x => x.Category).Load();
 

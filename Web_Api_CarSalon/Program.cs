@@ -2,8 +2,11 @@ using Core.Interfaces;
 using Core.MapperProfiles;
 using Core.Services;
 using Data;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using Web_Api_CarSalon.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +25,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<CarSalonDbContext>(opt => opt.UseSqlServer(connectionString));
+
+builder.Services.AddFluentValidationAutoValidation();
+// enable client-side validation
+builder.Services.AddFluentValidationClientsideAdapters();
+// Load an assembly reference rather than using a marker type.
+builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddAutoMapper(typeof(AppProfile));
 builder.Services.AddScoped<ICarService, CarService>();
 
@@ -33,6 +43,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
