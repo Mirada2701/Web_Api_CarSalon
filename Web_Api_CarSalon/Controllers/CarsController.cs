@@ -26,7 +26,7 @@ namespace Web_Api_CarSalon.Controllers
         {
             return Ok(carService.GetAll());
         }
-        [HttpGet("{id}")]
+        [HttpGet]
         public IActionResult Get(int id)
         {
            return Ok(carService.Get(id));
@@ -44,7 +44,7 @@ namespace Web_Api_CarSalon.Controllers
            carService.Edit(model);
             return Ok();
         }
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public IActionResult Delete(int id)
         {
             carService.Delete(id);

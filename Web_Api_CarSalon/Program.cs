@@ -22,76 +22,25 @@ string connectionString = builder.Configuration.GetConnectionString("LocalDb")!;
 
 // Add services to the container.
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-        //options.JsonSerializerOptions.MaxDepth = 0;
-    });
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<CarSalonDbContext>(opt => opt.UseSqlServer(connectionString));
-builder.Services.AddIdentity<User, IdentityRole>(options =>
-    options.SignIn.RequireConfirmedAccount = false)
-    .AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<CarSalonDbContext>();
+builder.Services.AddDbContext(connectionString);
+builder.Services.AddIdentity();
 
-builder.Services.AddFluentValidationAutoValidation();
-// enable client-side validation
-builder.Services.AddFluentValidationClientsideAdapters();
-// Load an assembly reference rather than using a marker type.
-builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddFluentValidators();
 
-builder.Services.AddAutoMapper(typeof(AppProfile));
-builder.Services.AddScoped<ICarService, CarService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddMapper();
 
-builder.Services.AddSingleton(_ =>
-              builder.Configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>()!);
+builder.Services.AddServices();
 
-var jwtOpts = builder.Configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>()!;
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(o =>
-                {
-                    o.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = jwtOpts.Issuer,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOpts.Key)),
-                        ClockSkew = TimeSpan.Zero
-                    };
-                });
+builder.Services.AddJwtOptions(builder.Configuration);
 
-builder.Services.AddSwaggerGen(options =>
-{
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-    {
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer"
-    });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
-});
+builder.Services.AddJwt(builder.Configuration);
+
+builder.Services.AddSwaggerToken();
 
 var app = builder.Build();
 
