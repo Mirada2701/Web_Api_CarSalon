@@ -10,6 +10,7 @@ using Web_Api_CarSalon.Middlewares;
 using Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Web_Api_CarSalon.Extensions;
+using Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,10 @@ builder.Services.AddAutoMapper(typeof(AppProfile));
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+
+builder.Services.AddSingleton(_ =>
+              builder.Configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>()!);
+
 
 var app = builder.Build();
 
